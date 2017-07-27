@@ -20,19 +20,19 @@ class ZhihuSpider(CrawlSpider):
     }
     
     def __init__(self, *args, **kwargs):
-        self.rules = (
+        self.rules = [
             Rule(RegexLinkExtractor(restrict_re='"url_token": "(.*?)"',
                                     base_url='/api/v4/members/{0}?include=allow_message%2Cis_followed%2Cis_following%2Cis_org%2Cis_blocking%2Cemployments%2Canswer_count%2Cfollower_count%2Carticles_count%2Cgender%2Cbadge%5B%3F(type%3Dbest_answerer)%5D.topics'),
+                 callback='parse_item'),
+            Rule(RegexLinkExtractor(restrict_re='"next": "(.*?)"', base_url='{0}'),
                  follow=True),
-        )
+        ]
         super(ZhihuSpider, self).__init__(*args, **kwargs)
     
     def parse_item(self, response):
         print(response.text)
-
+    
     def _requests_to_follow(self, response):
-        print('Response', response, type(response))
-        
         seen = set()
         for n, rule in enumerate(self._rules):
             links = [lnk for lnk in rule.link_extractor.extract_links(response)
@@ -43,4 +43,3 @@ class ZhihuSpider(CrawlSpider):
                 seen.add(link)
                 r = self._build_request(n, link)
                 yield rule.process_request(r)
-    

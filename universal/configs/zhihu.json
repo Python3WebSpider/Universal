@@ -15,49 +15,27 @@
   "allowed_domains": [
     "www.zhihu.com"
   ],
-  "rules": "[Rule(LinkExtractor(allow='/yc/\\d+.html'), callback='parse_item'), Rule(LinkExtractor(restrict_xpaths='//li[@class=\"sec\"]/a[contains(., \"下一页\")]'))]",
+  "rules": "[Rule(RegexLinkExtractor(restrict_re='\"url_token\": \"(.*?)\"',base_url='/api/v4/members/{0}?include=allow_message%2Cis_followed%2Cis_following%2Cis_org%2Cis_blocking%2Cemployments%2Canswer_count%2Cfollower_count%2Carticles_count%2Cgender%2Cbadge%5B%3F(type%3Dbest_answerer)%5D.topics'),callback='parse_item'),Rule(RegexLinkExtractor(restrict_re='\"next\": \"(.*?)\"', base_url='{0}'),follow=True),]",
   "item": {
-    "class": "SongItem",
+    "class": "ZhihuUserItem",
     "attrs": {
       "name": [
         {
           "method": "xpath",
           "args": [
-            "//div[@class=\"view_tit\"]/h1/text()"
+            "."
           ]
         },
         {
-          "method": "extract_first"
+          "method": "re_first",
+          "args": [
+            "\"name\": \"(.*?)\""
+          ]
         }
       ],
       "url": [
         {
           "attr": "url"
-        }
-      ],
-      "style": [
-        {
-          "method": "xpath",
-          "args": [
-            "//li[@class=\"view_info_row\"][1]/text()"
-          ]
-        },
-        {
-          "method": "extract_first"
-        },
-        {
-          "method": "strip"
-        }
-      ],
-      "lyric": [
-        {
-          "method": "xpath",
-          "args": [
-            "//div[contains(@class, 'lrc-tab-content')]//text()"
-          ]
-        },
-        {
-          "method": "extract"
         }
       ]
     }

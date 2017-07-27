@@ -13,3 +13,8 @@ class SongItem(Item):
     url = Field()
     style = Field()
     lyric = Field()
+
+
+class ZhihuUserItem(Item):
+    name = Field()
+    url = Field()
