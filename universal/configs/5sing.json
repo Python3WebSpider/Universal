@@ -28,7 +28,11 @@
       ],
       "url": [
         {
-          "attr": "url"
+          "method": "get_attr",
+          "args": [
+            "url"
+          ],
+          "type": "wrap"
         }
       ],
       "style": [

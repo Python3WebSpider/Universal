@@ -1,7 +1,7 @@
 {
   "spider_name": "universal",
   "description": "知乎",
-  "type": "音乐",
+  "type": "问答",
   "index": "https://www.zhihu.com/",
   "settings": {
     "DEFAULT_REQUEST_HEADERS": {
@@ -39,7 +39,11 @@
       ],
       "url": [
         {
-          "attr": "url"
+          "method": "get_attr",
+          "args": [
+            "url"
+          ],
+          "type": "wrap"
         }
       ]
     }

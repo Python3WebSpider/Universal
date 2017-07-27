@@ -32,8 +32,6 @@ class UniversalSpider(CrawlSpider):
                         # 动态调用函数和属性
                         if process.get('method'):
                             data[key] = getattr(data[key], process.get('method'))(*process.get('args', []))
-                        elif process.get('attr'):
-                            data[key] = getattr(data[key], process.get('attr'))
                     elif type == 'wrap':
                         args = [data[key]] + process.get('args', [])
                         data[key] = (eval(process.get('method'))(*args))

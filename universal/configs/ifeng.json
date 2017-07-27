@@ -1,0 +1,141 @@
+{
+  "spider_name": "universal",
+  "description": "凤凰资讯",
+  "type": "新闻",
+  "index": "http://news.ifeng.com/",
+  "settings": {
+  },
+  "start_urls": [
+    "http://news.ifeng.com/listpage/11502/0/1/rtlist.shtml"
+  ],
+  "allowed_domains": [
+    "news.ifeng.com"
+  ],
+  "rules": "[Rule(LinkExtractor(allow='listpage/.*/rtlist.shtml',restrict_xpaths='//div[@class=\"m_page\"]//a[contains(., \"下一页\")]'), follow=True),Rule(LinkExtractor(restrict_xpaths='//div[@class=\"newsList\"]//a'), callback='parse_item')]",
+  "item": {
+    "class": "NewsItem",
+    "attrs": {
+      "title": [
+        {
+          "method": "css",
+          "args": [
+            "#artical_topic::text"
+          ]
+        },
+        {
+          "method": "extract_first"
+        }
+      ],
+      "url": [
+        {
+          "method": "get_attr",
+          "args": [
+            "url"
+          ],
+          "type": "wrap"
+        }
+      ],
+      "publish_time": [
+        {
+          "method": "xpath",
+          "args": [
+            "//p[@class='p_time']/span[@itemprop='datePublished']//text()"
+          ]
+        },
+        {
+          "method": "extract_first"
+        },
+        {
+          "method": "date_transform",
+          "args": [
+            "%Y年%m月%d日 %H:%M:%S",
+            "%Y-%m-%d %H:%M:%S"
+          ],
+          "type": "wrap"
+        }
+      ],
+      "source": [
+        {
+          "method": "xpath",
+          "args": [
+            "//span[@itemprop='publisher']/span[@itemprop='name']/a/text()"
+          ]
+        },
+        {
+          "method": "extract_first"
+        }
+      ],
+      "source_url": [
+        {
+          "method": "xpath",
+          "args": [
+            "//span[@itemprop='publisher']/span[@itemprop='name']/a/@href"
+          ]
+        },
+        {
+          "method": "extract_first"
+        }
+      ],
+      "hot": [
+        {
+          "method": "set_value",
+          "args": [
+            0
+          ],
+          "type": "wrap"
+        }
+      ],
+      "replies": [
+        {
+          "method": "set_value",
+          "args": [
+            0
+          ],
+          "type": "wrap"
+        }
+      ],
+      "hits": [
+        {
+          "method": "set_value",
+          "args": [
+            0
+          ],
+          "type": "wrap"
+        }
+      ],
+      "content": [
+        {
+          "method": "css",
+          "args": [
+            "#main_content p::text"
+          ]
+        },
+        {
+          "method": "extract"
+        },
+        {
+          "method": "list2str",
+          "type": "wrap"
+        },
+        {
+          "method": "strip"
+        }
+      ],
+      "crawl_time": [
+        {
+          "method": "get_time",
+          "type": "wrap"
+        }
+      ],
+      "website": [
+        {
+          "method": "set_value",
+          "args": [
+            "凤凰资讯"
+          ],
+          "type": "wrap"
+        }
+      ]
+    }
+  }
+}

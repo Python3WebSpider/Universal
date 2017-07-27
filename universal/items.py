@@ -18,3 +18,18 @@ class SongItem(Item):
 class ZhihuUserItem(Item):
     name = Field()
     url = Field()
+
+
+class NewsItem(Item):
+    url = Field()
+    website = Field()
+    crawl_time = Field()
+    publish_time = Field()
+    source = Field()
+    source_url = Field()
+    title = Field()
+    content = Field()
+    hot = Field()
+    hits = Field()
+    replies = Field()
+    author = Field()
