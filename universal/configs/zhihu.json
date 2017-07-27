@@ -31,6 +31,10 @@
           "args": [
             "\"name\": \"(.*?)\""
           ]
+        },
+        {
+          "method": "unescape",
+          "type": "wrap"
         }
       ],
       "url": [

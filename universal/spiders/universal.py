@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-import json
 from scrapy.spiders import CrawlSpider, Rule
 from scrapy.linkextractors import LinkExtractor
 from universal.items import *
 from universal.utils import get_config
 from universal.extractors import RegexLinkExtractor
+from universal.cleaners import *
 
 
 class UniversalSpider(CrawlSpider):
@@ -27,11 +27,16 @@ class UniversalSpider(CrawlSpider):
             for key, value in item.get('attrs').items():
                 data[key] = response
                 for process in value:
-                    # 动态调用函数和属性
-                    if process.get('method'):
-                        data[key] = getattr(data[key], process.get('method'))(*process.get('args', []))
-                    elif process.get('attr'):
-                        data[key] = getattr(data[key], process.get('attr'))
+                    type = process.get('type', 'chain')
+                    if type == 'chain':
+                        # 动态调用函数和属性
+                        if process.get('method'):
+                            data[key] = getattr(data[key], process.get('method'))(*process.get('args', []))
+                        elif process.get('attr'):
+                            data[key] = getattr(data[key], process.get('attr'))
+                    elif type == 'wrap':
+                        args = [data[key]] + process.get('args', [])
+                        data[key] = (eval(process.get('method'))(*args))
             yield data
     
     def _requests_to_follow(self, response):

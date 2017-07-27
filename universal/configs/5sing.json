@@ -54,6 +54,13 @@
         },
         {
           "method": "extract"
+        },
+        {
+          "method": "list2str",
+          "type": "wrap"
+        },
+        {
+          "method": "strip"
         }
       ]
     }
