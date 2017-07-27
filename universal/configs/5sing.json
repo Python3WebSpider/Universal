@@ -1,0 +1,61 @@
+{
+  "spider_name": "universal",
+  "description": "5Sing-中国原创音乐基地",
+  "type": "音乐",
+  "index": "http://5sing.kugou.com/",
+  "settings": {
+  },
+  "start_urls": [
+    "http://5sing.kugou.com/yc/list?t=1"
+  ],
+  "allowed_domains": [
+    "5sing.kugou.com"
+  ],
+  "rules": "[Rule(LinkExtractor(allow='/yc/\\d+.html'), callback='parse_item'), Rule(LinkExtractor(restrict_xpaths='//li[@class=\"sec\"]/a[contains(., \"下一页\")]'))]",
+  "item": {
+    "class": "SongItem",
+    "attrs": {
+      "name": [
+        {
+          "method": "xpath",
+          "args": [
+            "//div[@class=\"view_tit\"]/h1/text()"
+          ]
+        },
+        {
+          "method": "extract_first"
+        }
+      ],
+      "url": [
+        {
+          "attr": "url"
+        }
+      ],
+      "style": [
+        {
+          "method": "xpath",
+          "args": [
+            "//li[@class=\"view_info_row\"][1]/text()"
+          ]
+        },
+        {
+          "method": "extract_first"
+        },
+        {
+          "method": "strip"
+        }
+      ],
+      "lyric": [
+        {
+          "method": "xpath",
+          "args": [
+            "//div[contains(@class, 'lrc-tab-content')]//text()"
+          ]
+        },
+        {
+          "method": "extract"
+        }
+      ]
+    }
+  }
+}

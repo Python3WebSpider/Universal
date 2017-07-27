@@ -1,0 +1,96 @@
+{
+  "classification": "scrapy",
+  "spider_name": "normal_crawl_spider",
+  "spider_crawl_name": "gjdw",
+  "spider_count": 1,
+  "key_search": 0,
+  "java_script": false,
+  "ajax": false,
+  "type": "新闻",
+  "id": "10001",
+  "delay": 0,
+  "depth_limit": 0,
+  "retry": 0,
+  "url": "http://www.sgcc.com.cn/xwzx/gsyw/yxfc/",
+  "headers": {
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Accept-Encoding": "gzip, deflate",
+    "Accept-Language": "zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3",
+    "Cache-Control": "max-age=0",
+    "Connection": "keep-alive",
+    "Cookie": "_PCSFirstTime=117-4-5-11-2-6; _PCSReturnTime=117-4-10-14-21-24; _PCSReturnCount=11",
+    "Host": "www.sgcc.com.cn",
+    "Upgrade-Insecure-Requests": "1",
+    "User-Agent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:52.0) Gecko/20100101 Firefox/52.0"
+  },
+  "params": {},
+  "method": "get",
+  "login": {},
+  "proxy": false,
+  "page": {
+    "start_urls": [
+      "http://www.sgcc.com.cn/xwzx/gsyw/yxfc/"
+    ],
+    "allowed_domains": [
+      "sgcc.com.cn"
+    ],
+    "rules": "Rule(LinkExtractor(allow=('/xwzx/gsyw/yxfc/index_\\d+.shtml',))),  Rule(LinkExtractor(allow=('/xwzx/gsyw/yxfc/\\d+/\\d{2,}.shtml',)), callback='parse_item')"
+  },
+  "xpath": {
+    "title": {
+      "xpath": [
+        "//div[@class=\"view_tit\"]/h1/text()"
+      ],
+      "cleaner": [
+        {
+          "列表检查": {}
+        }
+      ]
+    },
+    "publish_date": {
+      "xpath": [
+        "substring-after(.//*[@id='artibody']/div/text(), '发布时间：')"
+      ],
+      "cleaner": [
+        {
+          "列表检查": {}
+        },
+        {
+          "去除两端空白": {}
+        },
+        {
+          "时间适配": {
+            "format": "%Y-%m-%d"
+          }
+        }
+      ]
+    },
+    "content": {
+      "xpath": [
+        ".//*[@id='artibody']/p/text()"
+      ],
+      "cleaner": [
+        {
+          "添加标签": {
+            "label": "p"
+          }
+        },
+        {
+          "列表检查": {}
+        }
+      ]
+    },
+    "source": {
+      "xpath": [
+        "substring-after(.//*[@id='artibody']/p[last()]/text(), '信息来源：')",
+        "substring-after(.//*[@id='artibody']/p[last()]/text(), '信息来源；')",
+        "substring-after(.//*[@id='artibody']/p[last()]/text(), '供稿单位：')"
+      ],
+      "cleaner": [
+        {
+          "列表检查": {}
+        }
+      ]
+    }
+  }
+}

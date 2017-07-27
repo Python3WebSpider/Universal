@@ -1,0 +1,65 @@
+{
+  "spider_name": "universal",
+  "description": "知乎",
+  "type": "音乐",
+  "index": "https://www.zhihu.com/",
+  "settings": {
+    "DEFAULT_REQUEST_HEADERS": {
+      "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36",
+      "authorization": "oauth c3cef7c66a1843f8b3a9e6a1e3160e20"
+    }
+  },
+  "start_urls": [
+    "https://www.zhihu.com/api/v4/members/Germey/followers?include=data%5B*%5D.answer_count%2Carticles_count%2Cgender%2Cfollower_count%2Cis_followed%2Cis_following%2Cbadge%5B%3F(type%3Dbest_answerer)%5D.topics&offset=20&limit=20"
+  ],
+  "allowed_domains": [
+    "www.zhihu.com"
+  ],
+  "rules": "[Rule(LinkExtractor(allow='/yc/\\d+.html'), callback='parse_item'), Rule(LinkExtractor(restrict_xpaths='//li[@class=\"sec\"]/a[contains(., \"下一页\")]'))]",
+  "item": {
+    "class": "SongItem",
+    "attrs": {
+      "name": [
+        {
+          "method": "xpath",
+          "args": [
+            "//div[@class=\"view_tit\"]/h1/text()"
+          ]
+        },
+        {
+          "method": "extract_first"
+        }
+      ],
+      "url": [
+        {
+          "attr": "url"
+        }
+      ],
+      "style": [
+        {
+          "method": "xpath",
+          "args": [
+            "//li[@class=\"view_info_row\"][1]/text()"
+          ]
+        },
+        {
+          "method": "extract_first"
+        },
+        {
+          "method": "strip"
+        }
+      ],
+      "lyric": [
+        {
+          "method": "xpath",
+          "args": [
+            "//div[contains(@class, 'lrc-tab-content')]//text()"
+          ]
+        },
+        {
+          "method": "extract"
+        }
+      ]
+    }
+  }
+}
